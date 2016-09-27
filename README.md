@@ -20,3 +20,5 @@ cmake .
 make
 ./playground
 ```
+
+dickyjim has collected various resources regarding spherical harmonics on his [blog](https://dickyjim.wordpress.com/2013/09/04/spherical-harmonics-for-beginners/).
