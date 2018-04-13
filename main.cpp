@@ -1,3 +1,15 @@
+/***********************************************************
+* A spherical harmonics computation example and playground *
+* no warranty implied | use at your own risk               *
+* author: Andreas Mantler (ands) | last change: 13.04.2018 *
+*                                                          *
+* License:                                                 *
+* This software is in the public domain.                   *
+* Where that dedication is not recognized,                 *
+* you are granted a perpetual, irrevocable license to copy *
+* and modify this file however you want.                   *
+***********************************************************/
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <math.h>
@@ -181,14 +193,14 @@ static int initScene(scene_t *scene)
 				m_vec3 c_light = m_div3(m_v3(p[0], p[1], p[2]), 255.0f * l * l * l); // texelSolidAngle * texel_radiance;
 				n = m_normalize3(n);
 				scene->mesh.coefficients[0] = m_add3(scene->mesh.coefficients[0], m_scale3(c_light, 0.282095f));
-				scene->mesh.coefficients[1] = m_add3(scene->mesh.coefficients[1], m_scale3(c_light, -0.488603f * n.y * 2.0 / 3.0));
-				scene->mesh.coefficients[2] = m_add3(scene->mesh.coefficients[2], m_scale3(c_light, 0.488603f * n.z * 2.0 / 3.0));
-				scene->mesh.coefficients[3] = m_add3(scene->mesh.coefficients[3], m_scale3(c_light, -0.488603f * n.x * 2.0 / 3.0));
-				scene->mesh.coefficients[4] = m_add3(scene->mesh.coefficients[4], m_scale3(c_light, 1.092548f * n.x * n.y / 4.0));
-				scene->mesh.coefficients[5] = m_add3(scene->mesh.coefficients[5], m_scale3(c_light, -1.092548f * n.y * n.z / 4.0));
-				scene->mesh.coefficients[6] = m_add3(scene->mesh.coefficients[6], m_scale3(c_light, 0.315392f * (3.0f * n.z * n.z - 1.0f) / 4.0));
-				scene->mesh.coefficients[7] = m_add3(scene->mesh.coefficients[7], m_scale3(c_light, -1.092548f * n.x * n.z / 4.0));
-				scene->mesh.coefficients[8] = m_add3(scene->mesh.coefficients[8], m_scale3(c_light, 0.546274f * (n.x * n.x - n.y * n.y) / 4.0));
+				scene->mesh.coefficients[1] = m_add3(scene->mesh.coefficients[1], m_scale3(c_light, -0.488603f * n.y * 2.0f / 3.0f));
+				scene->mesh.coefficients[2] = m_add3(scene->mesh.coefficients[2], m_scale3(c_light, 0.488603f * n.z * 2.0f / 3.0f));
+				scene->mesh.coefficients[3] = m_add3(scene->mesh.coefficients[3], m_scale3(c_light, -0.488603f * n.x * 2.0f / 3.0f));
+				scene->mesh.coefficients[4] = m_add3(scene->mesh.coefficients[4], m_scale3(c_light, 1.092548f * n.x * n.y / 4.0f));
+				scene->mesh.coefficients[5] = m_add3(scene->mesh.coefficients[5], m_scale3(c_light, -1.092548f * n.y * n.z / 4.0f));
+				scene->mesh.coefficients[6] = m_add3(scene->mesh.coefficients[6], m_scale3(c_light, 0.315392f * (3.0f * n.z * n.z - 1.0f) / 4.0f));
+				scene->mesh.coefficients[7] = m_add3(scene->mesh.coefficients[7], m_scale3(c_light, -1.092548f * n.x * n.z / 4.0f));
+				scene->mesh.coefficients[8] = m_add3(scene->mesh.coefficients[8], m_scale3(c_light, 0.546274f * (n.x * n.x - n.y * n.y) / 4.0f));
 				p += 3 * step;
 				samples++;
 			}
