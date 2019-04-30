@@ -165,7 +165,7 @@ static int initScene(scene_t *scene)
 	glGenTextures(1, &scene->sky.texture);
 	glBindTexture(GL_TEXTURE_CUBE_MAP, scene->sky.texture);
 
-	int samples = 0;
+	float weightSum = 0.0f;
 	for (int i = 0; i < 6; i++)
 	{
 		int w, h, c;
@@ -190,7 +190,8 @@ static int initScene(scene_t *scene)
 						m_scale3(skyY[i], -2.0f * (y / (h - 1.0f)) + 1.0f)),
 					skyDir[i]); // texelDirection;
 				float l = m_length3(n);
-				m_vec3 c_light = m_div3(m_v3(p[0], p[1], p[2]), 255.0f * l * l * l); // texelSolidAngle * texel_radiance;
+				float weight = 1.0f / (l * l * l); // fast approximation of texelSolidAngle
+				m_vec3 c_light = m_scale3(m_v3(p[0], p[1], p[2]), weight / 255.0f);
 				n = m_normalize3(n);
 				scene->mesh.coefficients[0] = m_add3(scene->mesh.coefficients[0], m_scale3(c_light, 0.282095f));
 				scene->mesh.coefficients[1] = m_add3(scene->mesh.coefficients[1], m_scale3(c_light, -0.488603f * n.y * 2.0f / 3.0f));
@@ -202,14 +203,14 @@ static int initScene(scene_t *scene)
 				scene->mesh.coefficients[7] = m_add3(scene->mesh.coefficients[7], m_scale3(c_light, -1.092548f * n.x * n.z / 4.0f));
 				scene->mesh.coefficients[8] = m_add3(scene->mesh.coefficients[8], m_scale3(c_light, 0.546274f * (n.x * n.x - n.y * n.y) / 4.0f));
 				p += 3 * step;
-				samples++;
+				weightSum += weight;
 			}
 		}
 
 		free(stbidata);
 	}
 	for (int s = 0; s < 9; s++)
-		scene->mesh.coefficients[s] = m_scale3(scene->mesh.coefficients[s], 32.0f / samples);
+		scene->mesh.coefficients[s] = m_scale3(scene->mesh.coefficients[s], 4.0f * M_M_PI / weightSum);
 
 	glGenerateMipmap(GL_TEXTURE_CUBE_MAP);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
